@@ -4,5 +4,5 @@
 - Age and gender detection
 
 ## Age and gender detection
-- Open the terminal, run the following command.
+- Open the terminal, run the following command.<br>
   `python {paht}/MyBeautyAI/AGE-Gender-Detection/age_gender_detection_live.py`
