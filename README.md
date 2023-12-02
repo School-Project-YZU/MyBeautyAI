@@ -33,6 +33,6 @@
 > If you have any questions, please contact the corresponding person first.
 
 - Front-end (index.html): 趙家緯
-- Dataset (CareProduct_clarins.csv & embedding-clarins.docx): 江家恩
+- Dataset (CareProduct_clarins.csv & embedding-clarins.docx): 江佳恩
 - Front-end (index.js) / Back-end (connect.py architecture and flask): 蔡芊葳
 - Back-end (All except front-end): 黃淳庭
