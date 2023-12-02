@@ -1,7 +1,7 @@
-from argparse import ArgumentParser
-from age_gender_detection_live import *
+import argparse
 import time
 from pathlib import Path
+
 import cv2
 import torch
 import torch.backends.cudnn as cudnn
@@ -9,23 +9,12 @@ from numpy import random
 
 from models.experimental import attempt_load
 from utils.datasets import LoadStreams, LoadImages
-from utils.general import check_img_size, check_imshow, non_max_suppression, apply_classifier, \
+from utils.general import check_img_size, check_requirements, check_imshow, non_max_suppression, apply_classifier, \
     scale_coords, xyxy2xywh, strip_optimizer, set_logging, increment_path
 from utils.plots import plot_one_box
 from utils.torch_utils import select_device, load_classifier, time_synchronized, TracedModel
-import openai
-from read_csv_value import choose_product
-from text_to_video_beta import *
+from collections import Counter
 
-import base64
-import json
-
-from flask import Flask, render_template, send_file, request, jsonify
-import webbrowser
-import openai
-import azure.cognitiveservices.speech as speechsdk
-
-result_url = ''
 
 def detect(save_img=False):
     source, weights, view_img, save_txt, imgsz, trace = opt.source, opt.weights, opt.view_img, opt.save_txt, opt.img_size, not opt.no_trace
@@ -79,11 +68,9 @@ def detect(save_img=False):
     old_img_b = 1
 
     t0 = time.time()
-    results_wrinkle = []  # 放置結果
-    count_1 = 0  # 計算次數
+    results_wrinkle = [] #放置結果
+    count_1=0 #計算次數
     for path, img, im0s, vid_cap in dataset:
-        if count_1 == 20:
-            break
         img = torch.from_numpy(img).to(device)
         img = img.half() if half else img.float()  # uint8 to fp16/32
         img /= 255.0  # 0 - 255 to 0.0 - 1.0
@@ -91,8 +78,7 @@ def detect(save_img=False):
             img = img.unsqueeze(0)
 
         # Warmup
-        if device.type != 'cpu' and (
-                old_img_b != img.shape[0] or old_img_h != img.shape[2] or old_img_w != img.shape[3]):
+        if device.type != 'cpu' and (old_img_b != img.shape[0] or old_img_h != img.shape[2] or old_img_w != img.shape[3]):
             old_img_b = img.shape[0]
             old_img_h = img.shape[2]
             old_img_w = img.shape[3]
@@ -101,7 +87,7 @@ def detect(save_img=False):
 
         # Inference
         t1 = time_synchronized()
-        with torch.no_grad():  # Calculating gradients would cause a GPU memory leak
+        with torch.no_grad():   # Calculating gradients would cause a GPU memory leak
             pred = model(img, augment=opt.augment)[0]
         t2 = time_synchronized()
 
@@ -132,8 +118,8 @@ def detect(save_img=False):
                 for c in det[:, -1].unique():
                     n = (det[:, -1] == c).sum()  # detections per class
                     s += f"{n} {names[int(c)]}{'s' * (n > 1)}, "  # add to string
-                    results_wrinkle.append(names[int(c)])  # 將出現的結果放入result_wrinkle
-
+                    results_wrinkle.append(names[int(c)]) #將出現的結果放入result_wrinkle
+                    
                 # Write results
                 for *xyxy, conf, cls in reversed(det):
                     if save_txt:  # Write to file
@@ -148,9 +134,9 @@ def detect(save_img=False):
 
             # Print time (inference + NMS)
             # print(f'{s}Done. ({(1E3 * (t2 - t1)):.1f}ms) Inference, ({(1E3 * (t3 - t2)):.1f}ms) NMS')
-            # {results_wrinkle}Done.
+            # {results_wrinkle}Done. 
             time_process = f'({(1E3 * (t2 - t1)):.1f}ms) Inference, ({(1E3 * (t3 - t2)):.1f}ms) NMS'
-            time_process += f' | FPS : {1 / (t3 - t1): .1f} '
+            time_process += f' | FPS : { 1/(t3-t1): .1f} '
             print(time_process)
 
             # Stream results
@@ -179,122 +165,22 @@ def detect(save_img=False):
                     vid_writer.write(im0)
 
         count_1 += 1
-        # if count_1 == 20:
-        #     cv2.destroyAllWindows()
-        #     break
-    cv2.destroyAllWindows()
+        if count_1 == 20:
+            break
 
     if save_txt or save_img:
         s = f"\n{len(list(save_dir.glob('labels/*.txt')))} labels saved to {save_dir / 'labels'}" if save_txt else ''
-        # print(f"Results saved to {save_dir}{s}")
+        #print(f"Results saved to {save_dir}{s}")
 
     result_counter = Counter(results_wrinkle)  # 使用 Counter 統計結果出現次數
-    unique_chars = set(result_counter)  # 找出出現的類別
-
+    unique_chars = set(result_counter) # 找出出現的類別
+    # most_common_result = result_counter.most_common()[0][0]
+    print(unique_chars)
     print(f'Done. ({time.time() - t0:.3f}s)')
 
-    return unique_chars
 
-
-app = Flask(__name__)
-
-
-# 設置路由，將靜態文件提供給用戶訪問
-@app.route('/')
-def index():
-    video_filename = result_url
-    prod_des = prod_desc
-    return render_template('/index.html', video_filename=video_filename, prod_des=prod_des)
-
-
-# 取得api.json
-@app.route('/api.json')
-def get_api_json():
-    return send_file('api.json')
-
-
-# 路由來取得chatgpt的回應
-@app.route('/get_openai_response', methods=['POST'])
-def get_openai_response():
-    user_input = request.json['user_input']
-    # 使用 OpenAI Python 庫進行 API 請求
-    completion = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
-        messages=[
-            {"role": "system",
-             "content": f"你是一個克蘭詩美容產品專員，負責招待客人，你剛剛推薦{product_result}這項產\
-                品給{string_result}的客人了解，繼續解決客人的疑問，也可以推薦不同的產品，但必須是克蘭詩的產品，回答內容在50字以內"},
-            {"role": "user", "content": user_input}
-        ]
-    )
-
-    response = completion["choices"][0]["message"]["content"]
-    print(len(response))
-    return jsonify(response=response)
-
-
-"""
-API KEY 需自行上Azure上使用學校帳號申請
-"""
-azure_api_key = "XXX"
-azure_region = "XXX"
-
-
-# 執行語音識別
-def transcribe_audio(speech_config):
-    audio_config = speechsdk.AudioConfig(use_default_microphone=True)
-    speech_recognizer = speechsdk.SpeechRecognizer(speech_config=speech_config, audio_config=audio_config)
-    result = speech_recognizer.recognize_once_async().get()
-    return result.text.strip()
-
-
-# 異步路由來獲取語音識別結果
-@app.route('/recognize_audio', methods=['POST'])
-async def recognize_audio():
-    # 建立 Azure 語音辨識的 SpeechConfig
-    speech_config = speechsdk.SpeechConfig(subscription=azure_api_key, region=azure_region,
-                                           speech_recognition_language='zh-TW')
-
-    # 執行語音辨識
-    result_text = transcribe_audio(speech_config)
-
-    # 回傳辨識結果
-    return jsonify(result_text=result_text)
-
-
-if __name__ == "__main__":
-
-    # # Age-gender-detection
-
-    agd_parser = ArgumentParser(description='Using OpenCV to detect the age and gender of people')
-    agd_parser.add_argument("-fprotp", help='input face proto file path', type=str,
-                            default="AGE-Gender-Detection/opencv_face_detector.pbtxt")
-    agd_parser.add_argument("-fmodel", help='input face model file path', type=str,
-                            default="AGE-Gender-Detection/opencv_face_detector_uint8.pb")
-    agd_parser.add_argument("-aprotp", help='input age proto file path', type=str,
-                            default="AGE-Gender-Detection/age_deploy.prototxt")
-    agd_parser.add_argument("-amodel", help='input age model file path', type=str,
-                            default="AGE-Gender-Detection/age_net.caffemodel")
-    agd_parser.add_argument("-gprotp", help='input gender proto file path', type=str,
-                            default="AGE-Gender-Detection/gender_deploy.prototxt")
-    agd_parser.add_argument("-gmodel", help='input gender model file path', type=str,
-                            default="AGE-Gender-Detection/gender_net.caffemodel")
-    agd_args = agd_parser.parse_known_args()
-
-    faceProto = agd_args[0].fprotp
-    faceModel = agd_args[0].fmodel
-
-    ageProto = agd_args[0].aprotp
-    ageModel = agd_args[0].amodel
-
-    genderProto = agd_args[0].gprotp
-    genderModel = agd_args[0].gmodel
-
-    gender_age_result = run(faceProto, faceModel, ageProto, ageModel, genderProto, genderModel)
-    # run(faceProto, faceModel, ageProto, ageModel, genderProto, genderModel)
-
-    # yolov7 detect.py
-    parser = ArgumentParser(description='Using YOLOv7 to detect the wrinkles and spots')
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
     parser.add_argument('--weights', nargs='+', type=str, default='best.pt', help='model.pt path(s)')
     parser.add_argument('--source', type=str, default='0', help='source')  # file/folder, 0 for webcam
     parser.add_argument('--img-size', type=int, default=640, help='inference size (pixels)')
@@ -314,65 +200,13 @@ if __name__ == "__main__":
     parser.add_argument('--exist-ok', action='store_true', help='existing project/name ok, do not increment')
     parser.add_argument('--no-trace', action='store_false', help='don`t trace model')
     opt = parser.parse_args()
-    # print(yolov7_opt)
-    # check_requirements(exclude=('pycocotools', 'thop'))
+    print(opt)
+    #check_requirements(exclude=('pycocotools', 'thop'))
 
     with torch.no_grad():
         if opt.update:  # update all models (to fix SourceChangeWarning)
             for opt.weights in ['yolov7.pt']:
-                wrinkle_result = detect()
+                detect()
                 strip_optimizer(opt.weights)
         else:
-            wrinkle_result = detect()
-
-    # 將所有辨識性別年齡以及有無皺紋黑斑的結果放到all_result
-    all_result = []
-    all_result.append(gender_age_result[0])
-    all_result.append(gender_age_result[1])
-    for a1 in wrinkle_result:
-        # 輸出結果：['Female', '(15-20)', 'nasolabial folds', 'black_spot', 'crow-s feet', 'forehead wrinkles']
-        all_result.append(a1)
-
-    # all_result = ['Male', '(15-20)', 'black_spot']
-    # 將all_result變成string，因為ChatGPT只能輸入str的格式(輸出結果：Female、(15-20)、nasolabial folds、black_spot、crow-s feet、forehead wrinkles)
-    global string_result
-    string_result = '、'.join(all_result)
-
-    # 從csv檔中挑出適合的產品名稱與品牌以及產品的功效
-    global product_result, prod_desc
-    product_result, product_decribtion = choose_product(all_result)
-    prod_desc = product_decribtion.replace(r'\r', '').replace(r'\n', '<br>')
-    # product_decribtion=product_decribtion.replace("\n", "<br>")
-    # prod_desc=product_decribtion
-    print(product_result)
-    print(prod_desc)
-    print(string_result)
-
-    openai.api_key = "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"
-
-    completion = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
-        messages=[
-            {"role": "system",
-             "content": "你是一個廣告文案師，請寫一段低於40字的中文廣告，將" + product_result + "的功效以及好處推薦給" + string_result + "年齡段的消費者"},
-            {"role": "user", "content": "哪一種保養品適合我"}
-        ]
-    )
-
-    word = completion["choices"][0]["message"]["content"]
-    print(word)
-
-    # print(len(word))
-    # 取得D-ID API KEY
-    with open('api.json', 'r') as file:
-        data = json.load(file)
-
-    value = data['key']
-    base64_bytes = base64.b64encode(value.encode('ascii'))
-    d_id_api = base64_bytes.decode('ascii')
-
-    result_url = create_a_talk(word, d_id_api)
-    print(result_url)
-
-    webbrowser.open('http://127.0.0.1:3000')
-    app.run(port=3000, threaded=True)
+            detect()

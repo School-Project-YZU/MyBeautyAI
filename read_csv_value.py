@@ -2,7 +2,7 @@ import pandas as pd
 
 def choose_product(s):
     # 讀取CSV文件
-    df = pd.read_csv('CareProduct.csv', encoding='UTF-8-sig')
+    df = pd.read_csv('CareProduct_clarins.csv', encoding='UTF-8-sig')
 
     # 隨機的條件列表
     # s = ['Male', '(15-20)', 'black_spot']
@@ -31,7 +31,7 @@ def choose_product(s):
 
     # 條件選擇：獲取符合條件的行
     result = df[condition][['品牌', '產品名稱']]
+    description = df[condition][['產品描述']]
+    
+    return result.to_string(index=False, header=False), description.to_string(index=False, header=False)
 
-    # 輸出結果
-    # print(result.to_string(index=False, header=False))
-    return result.to_string(index=False, header=False)

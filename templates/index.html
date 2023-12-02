@@ -76,16 +76,25 @@
       }
 
       /* added css from here */
-
+      body{
+        margin: 0; /* 去除默认的外边距 */
+        padding: 0; /* 去除默认的内边距 */
+        height: 100vh; /* 将<body>的高度设置为视窗的高度 */
+        overflow: hidden; /* 防止内容溢出屏幕时出现滚动条 */
+        background-image: url('../static/b2.jpg');;
+      }
       body * {
         font-family: 'Mulish', sans-serif;
         text-align: center;
       }
 
       #content {
-        width: 820px;
+        width: 80%;
         position: relative;
-        margin: 0 auto;
+        margin-left: 10% ;
+        margin-top: 5%;
+        margin-right: 10%;
+        padding-top: 100px;
       }
 
       #buttons {
@@ -95,97 +104,578 @@
       }
 
       button {
-        padding: 10px 20px;
-        border-radius: 5px;
+        
+        border-radius: 10px;
         border: none;
         font-size: 16px;
-        margin: 0 5px;
-        background-color: #7459fe;
-        color: #fff;
+        margin: left 10%;;
+        background-color: #f9f7ff;
+        color: #3676ff;
+        border: #3676ff solid 2px;
+        border-radius: 50%;
       }
 
       button:hover {
-        background-color: #9480ff;
+        background-color: #4674ff;
+        color: #fff;
         cursor: pointer;
         transition: all 0.2s ease-out;
       }
 
       button:active {
-        background-color: beige;
-        border:3px orange double;
+        background-color: rgb(239, 239, 239);
+        border:3px rgb(255, 78, 78) double;
+        color: rgb(255, 0, 0);
+        box-shadow:4px 4px 12px 4px rgba(255, 255, 255);
       }
 
       #status {
+        top: 0px;
+        left: 450px;
+        position: absolute;
         clear: both;
-        padding: 20px 0 0 0;
+        padding: 10px 0 0 0;
         text-align: left;
         display: inline-block;
         zoom: 1;
         line-height: 140%;
         font-size: 15px;
+        width: 40%;
+        padding-left:10% ;
+        margin-bottom: 10%;
+        color: #ffffff;
       }
+      /*.st{
+        background-color: rgba(255, 255, 255,0.6);
+      }*/
 
       #status div {
         padding-bottom: 10px;
       }
 
       #video-wrapper {
-        background: url('../static/bg.png');
-        height: 500px;
+        top: 10%;
+        margin-left: 30px;
+        float: left;
+        background: url('../static/b2.jpg');;
+        height: 450px;
         background-position: top;
+        z-index: 10;
       }
 
       #video-wrapper div {
-        width: 400px;
-        margin: 0 auto;
-        padding: 50px 0 0 0;
+        width : 40%;
+        float: left;
+        margin-right: 10%;
+        z-index: 10;
       }
       video {
         display: block;
         /*border:1px solid;*/
-        border-radius: 50%;
+        border-radius: 25% 10%;
         background-color: #fff;
+        box-shadow:4px 4px 12px 10px  #fff;
+        z-index: 10;
       }
+      #input-container {
+        float: left;
+        margin-left: 10%;
+        width: 40%;
+        height: 500 px;
+      }
+      .bt1{
+        
+        margin-left:8%;
+        float: left;
+        margin-bottom: 10%;
+      }
+      .ty1{
+        position: absolute;
+        z-index: 11;
+        top: 180px;
+        left: 535px;
+      }
+      .ty2{
+        position: absolute;
+        z-index: 10;
+        top: 230px;
+        left: 765px;
+      }
+      .ty3{
+        position: absolute;
+        top: 395px;
+        left: 640px;
+      }
+      .ty0{
+        position: absolute;
+        top: 493px;
+        left: 638px;
+      }
+      .ty4{
+        position: absolute;
+        top: 390px;
+        left: 650px;
+        border-radius: 30%;
+      }
+      .bp{
+        /*background: linear-gradient(to top right, rgb(213, 239, 255) 50%, rgb(255, 110, 110));*/
+        background-image: url('../static/b2.jpg'); 
+        position: relative;
+        background-size: 100% auto; /* 将宽度设置为100%，高度自动适应 */
+        background-repeat: no-repeat;/* 防止图片重复 */
+        /*background-position: center center; /* 图片居中对齐 */
+        /*width: 100%; /* 让容器宽度填满视窗 */
+        /*height: 100vh; /* 设置容器高度为视窗高度 */
+      }
+      .po{
+        position: relative;
+        top: 0px;
+        width: auto;
+        height: auto;
+      }
+      #dashedLine {
+        z-index: 0;
+        border: 2px white solid; /* 初始化虚线，颜色为透明 */
+        position: absolute;
+        top: 180px;
+        left: 580px;
+        width: 230px;
+        height: 230px;
+        margin-top: 20px; /* 为了显示虚线，增加一些间距 */
+        border-radius: 50%;
+      }
+
+      #dashedLine.show {
+        
+        animation: dash 6s linear; /* 应用动画 */
+        border-color: white;
+      }
+      @keyframes dash {
+        0% {
+          transform: rotate(0deg);
+          border-color: white;
+        }
+        25% {
+          width: 240px;
+          height: 240px;
+          top:175px;
+          left: 575px;
+          border: 4px  dashed;
+          transform: rotate(120deg);
+          border-color: #000;
+        }
+        50%{
+          width: 250px;
+          height: 250px;
+          top:170px;
+          left: 570px;
+          border: 8px  dashed;
+          transform: rotate(300deg);
+          border-color: #ffffff;
+        
+        }
+
+        75%{
+          width: 240px;
+          height: 240px;
+          top:175px;
+          left: 575px;
+          border: 6px  dashed;
+          transform: rotate(480deg);
+          border-color: rgb(255, 235, 124);
+          
+        }
+
+        90% {
+          width: 230px;
+          height: 230px;
+          border: 4px  dashed;
+          transform: rotate(600deg);
+          border-color:gold;
+        }
+        100%{
+          width: 230px;
+          height: 230px;
+          border: 3px  dashed;
+          border-color: white;
+        }
+      }
+      .circle {
+        width: 10px;
+        height: 10px;
+        background-color: #ffffff;
+        border-radius: 50%;
+        display: inline-block;
+        opacity: 0;
+       overflow: hidden;
+        margin: 0 10px;
+      }
+      .circle_show0{
+         animation: circleAnimation0 3s ease infinite;
+      }
+      .circle_show1{
+         animation: circleAnimation1 3s ease infinite;
+      }
+      .circle_show2{
+         animation: circleAnimation2 3s ease infinite;
+      }
+      #circle1{
+        position: absolute;
+        top: 240px;
+        left: 665px;
+      }
+      #circle2{
+        position: absolute;
+        top: 245px;
+        left: 695px;
+      } 
+      #circle3{
+        position: absolute;
+        top: 250px;
+        left: 725px;
+      }
+
+      /*#circle1::before, #circle2::before, #circle3::before {
+        content: "";
+        width: 10px;
+        height: 10px;
+        background-color: #ffffff;
+        border-radius: 50%;
+        display: inline-block;
+        opacity: 0;
+        animation: circleAnimation 3s ease infinite;
+        margin: 0 10px;
+      }*/
+
+      @keyframes circleAnimation0 {
+        0%, 100% {
+          opacity: 0;
+        }
+        25%, 55% {
+          opacity: 1;
+        }
+      }
+      @keyframes circleAnimation1 {
+        0%, 10% {
+          opacity: 0;
+        }
+        35%, 65% {
+          opacity: 1;
+        }
+      }
+      @keyframes circleAnimation2 {
+        0%, 20% {
+          opacity: 0;
+        }
+        45%, 75% {
+          opacity: 1;
+        }
+      }
+      .shine{
+        background-color: gold;
+        border: #fff double;
+        color: #fff;
+        box-shadow:0px 0px 12px 10px  #fff;
+      }
+      .a_shine{
+        animation: a_shine 6s;
+        background-color: gold;
+          border: #fff double;
+          color: #fff;
+          box-shadow:0px 0px 12px 10px  #fff;
+      }
+      @keyframes a_shine {
+        0%,95%{
+          background-color: rgb(58, 58, 58);
+          color: #959595;
+          box-shadow:0px 0px 0px 0px  #fff;
+        }
+
+        100%{
+          background-color: gold;
+          border: #fff double;
+          color: #fff;
+          box-shadow:0px 0px 12px 10px  #fff;
+        }
+      }
+      #d1 {
+        transform: skewX(135deg);
+        transform-origin: 0 100%;
+        position: absolute;
+        right: 0;
+        top: 0;
+        background: red;
+        width: 100px;
+        height: 100px;
+        overflow: hidden;
+    }
+    .dis{
+      visibility: hidden; /* 隐藏元素 */
+      pointer-events: none; /* 禁用鼠标事件 */
+    }
+    .cc1{
+      width: 1800px;
+      height: 1000px;
+      border-radius: 50%;
+      border: 2px white solid;
+      position: absolute;
+      top: -150px;
+      left: -300px;
+      z-index: 0;
+      transform: rotate(45deg);
+    }
+    .cc2{
+      width: 1800px;
+      height: 1000px;
+      border-radius: 50%;
+      border: 2px white solid;
+      position: absolute;
+      top: -150px;
+      left: -300px;
+      z-index: 0;
+      transform: rotate(-45deg);
+    }
+    
+    .arrow {
+      border: solid rgb(255, 233, 68);
+      border-width: 0 16px 16px 0;
+      display: inline-block;
+      padding: 3px;
+      position: absolute;
+      z-index: 0;
+      top: 290px;
+      left: 820px;
+    }
+    .a_fly{
+      animation: a_fly 5.7s linear;
+    }
+    @keyframes a_fly {
+      0%{
+        top: 290px;
+        left: 820px;
+      }
+      10%{
+        top: 340px;
+        left: 840px;
+        rotate: 15deg;
+      }
+      20%{
+        top: 370px;
+        left: 870px;
+        rotate: -15deg;
+      }
+     30%{
+        top: 390px;
+        left: 910px;
+        rotate: -55deg;
+      }
+      40%{
+        top: 340px;
+        left: 960px;
+        rotate: -125deg;
+      }
+      50%{
+        top: 290px;
+        left: 910px;
+        rotate: -195deg;
+      }
+      60%{
+        top: 320px;
+        left: 880px;
+        rotate: -290deg;
+      }
+      70%{
+        top: 430px;
+        left: 860px;
+        rotate: -250deg;
+      }
+      80%{
+        top: 460px;
+        left: 820px;
+        rotate: -270deg;
+      }
+      90%{
+        top: 480px;
+        left: 740px;
+        rotate: -210deg;
+      }
+      100%{
+        top: 440px;
+        left: 680px;
+        rotate: -180deg;
+      }
+    }
+    .l_shine{
+      animation: l_shine 3s infinite;
+    }
+    @keyframes l_shine{
+      0%,100%{
+        border-color: gold;
+        background-color: rgba(255, 255, 255,1);
+        color: gold;
+      }
+      50%{
+        border-color: rgb(255, 255, 255);
+        background-color: white;
+        box-shadow:0px 0px 13px 3px  #fffa5f;
+        color: gold;
+      }
+    }
+    .pro{
+      position: absolute;
+      width: 400px;
+      height: 500px;
+      top: -50px;
+      right: -100px;
+      background-color: rgba(255, 255, 255,0.75);
+    }
     </style>
+    
   </head>
 
-  <body>
+  <body class="bp">
     <!-- adde "id=content" -->
-    <div id="content">
-      <!-- added "id=video-wrapper" -->
-      <div id="video-wrapper">
-        <div>
-          <video id="talk-video" width="400" height="400" controlsList="nodownload" autoplay controls>
-            <source src="{{ video_filename }}" type="video/mp4">
-          </video>
+    <div>
+      <div id="content" class="col-md-12">
+        <div class="cc1"></div>
+        <div class="cc2"></div>
+        <!-- added "id=video-wrapper" -->
+        <div id="video-wrapper" class="col-md-6">
+          <div>
+            <video id="talk-video" width="400" height="400" controlsList="nodownload" autoplay controls>
+              <!--<source src="{{ url_for('static', filename=video_filename) }}" type="video/mp4">-->
+              <!--<source src="/video" type="video/mp4">-->
+              <source src="{{ video_filename }}" type="video/mp4">
+            </video>
+          </div>
         </div>
-      </div>
-      <div id="input-container">
-        <!--<input type="text" id="user-input-field" placeholder="Enter your message...">-->
-        <button id="listen-button" type="button">Listen</button>
-        <button id="stop-button" type="button">Stop</button>
-        <hr>
-      </div>
-      <!-- added div#buttons -->
-      <div id="buttons">
-        <button id="connect-button" type="button">Connect</button>
-        <button id="talk-button" type="button">Start</button>
-        <button id="destroy-button" type="button">Destroy</button>
-      </div>
 
-      <!-- added div#status -->
-      <div id="status">
-        <!-- removed the wrapping <div> tags -->
-        ICE gathering status: <label id="ice-gathering-status-label"></label
-        ><br />
-        ICE status: <label id="ice-status-label"></label><br />
-        Peer connection status: <label id="peer-status-label"></label><br />
-        Signaling status: <label id="signaling-status-label"></label><br />
-        Streaming status: <label id="streaming-status-label"></label><br />
+        <!-- added div#status -->
+        <div class="po">
+        <div id="status"><b class="st">
+          <!-- removed the wrapping <div> tags -->
+          ICE gathering status: <label id="ice-gathering-status-label"></label
+          ><br />
+          ICE status: <label id="ice-status-label"></label><br />
+          Peer connection status: <label id="peer-status-label"></label><br />
+          Signaling status: <label id="signaling-status-label"></label><br />
+          Streaming status: <label id="streaming-status-label"></label><br /></b>
+          
+        </div>
+
+        <div id="input-container">
+          <div class="bt1 col-3">
+          <!--<input type="text" id="user-input-field" placeholder="Enter your message...">-->
+          <button id="listen-button" type="button" class="ty1" style="padding: 50px 40px; font-size:20px; ;">Listen</button>
+          
+          </div>
+          <div id="dashedLine" ></div>
+          
+
+          <div id="cc">
+          <div class="circle" id="circle1"></div>
+          <div class="circle" id="circle2"></div>
+          <div class="circle" id="circle3"></div>
+          
+          </div>
+          <div class="bt1 col-3">
+            <button id="stop-button" type="button" class="ty2" style="padding: 35px 30px;">Stop</button>
+          </div>
+          <div class="arrow"></div>
+          <br>
+          <div id = "description_block" class="pro">
+            <b><p style="word-break: break-all;text-align: left;">{{ prod_des|safe }}</p></b>
+          </div>
+        </div>
+        
+        <div class="col-md-6" style="margin-left:16% ;">
+            <button id="talk-button" type="button" class="ty3" style="padding: 30px 25px;">Start</button>
+        </div>
+       </div> 
+
+        <!-- added div#buttons -->
+        <div id="buttons" class="col-md-12">
+          <button id="connect-button" type="button" class="ty0 tty" style="padding: 33px 15px;">Connect</button>
+          <button id="destroy-button" type="button" class="ty4 dis" style="padding: 10px 15px;">Destroy</button>
+          
+        </div>
+
       </div>
     </div>
+    
 
     <script type="module" src="{{ url_for('static', filename='index.js') }}"></script>
-    
+    <script>
+      var toggleButton = document.querySelector('.ty1');
+      var toggleButton2 = document.querySelector('.ty2');
+      var toggleButton3 = document.querySelector('.ty3');
+      var toggleButton4 = document.querySelector('.tty');
+      var arr = document.querySelector('.arrow');
+      var dashedLine0 = document.querySelector('#dashedLine');
+      var dashedLine02 = document.querySelector('#dashedLine2');
+      var dashedLine = document.getElementsByClassName("circle")[0];
+      var dashedLine1 = document.getElementsByClassName("circle")[1];
+      var dashedLine2 = document.getElementsByClassName("circle")[2];
+      
+      let isDashedLineVisible = false;
+      let st = 0;
+      toggleButton.classList.add("shine");
+
+      toggleButton.addEventListener("mousedown", () => {
+        // 按下按钮时显示虚线
+        toggleButton.classList.remove("shine");
+        toggleButton.classList.add("l_shine");
+        dashedLine.classList.add("circle_show0");
+        dashedLine1.classList.add("circle_show1");
+        dashedLine2.classList.add("circle_show2");
+        isDashedLineVisible = true;
+        toggleButton2.classList.add("shine");
+        toggleButton3.classList.remove("a_shine");
+        dashedLine0.classList.remove("show");       
+      });
+
+      toggleButton2.addEventListener("mouseup", () => {
+        // 松开按钮时隐藏虚线
+        if(st == 0)
+        {
+          toggleButton4.classList.add("a_shine");
+          
+        }
+        if (isDashedLineVisible && st!= 0) {
+          isDashedLineVisible = false;
+          toggleButton2.classList.remove("shine");
+          toggleButton3.classList.add("a_shine");
+        }
+        dashedLine.classList.remove("circle_show0");
+        dashedLine1.classList.remove("circle_show1");
+        dashedLine2.classList.remove("circle_show2");
+        toggleButton.classList.remove("l_shine");
+        toggleButton2.classList.remove("shine");
+        dashedLine0.classList.add("show");
+        arr.classList.add("a_fly");
+      });
+
+        toggleButton4.addEventListener("mouseup", () => {
+          
+          toggleButton4.classList.remove("a_shine");
+          dashedLine0.classList.remove("show");
+          toggleButton4.classList.add("dis");
+          toggleButton3.classList.add("shine");
+          arr.classList.remove("a_fly");
+          st = 1;
+        });
+
+        toggleButton3.addEventListener("mouseup",() =>{
+          if(st == 1){
+            toggleButton.classList.add("shine");
+            toggleButton3.classList.remove("shine");
+            st = 2;
+          }
+          toggleButton3.classList.remove("a_shine");
+          dashedLine0.classList.remove("show");
+          toggleButton.classList.add("shine");
+          arr.classList.remove("a_fly");
+        });
+    </script>
   </body>
 </html>

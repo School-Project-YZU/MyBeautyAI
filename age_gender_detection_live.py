@@ -24,6 +24,9 @@ def getFaceBox(net, frame,conf_threshold = 0.75):
 
     return frameOpencvDnn , bboxes
 
+
+
+
 def run(faceProto, faceModel, ageProto, ageModel, genderProto, genderModel):
     
     MODEL_MEAN_VALUES = (78.4263377603, 87.7689143744, 114.895847746)
