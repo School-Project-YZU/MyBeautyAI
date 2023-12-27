@@ -28,11 +28,11 @@
 
 ![architecture](image/README/architecture.png)
 
-## Responsible Parts
-
-> If you have any questions, please contact the corresponding person first.
-
-- Front-end (index.html): 趙家緯
-- Dataset (CareProduct_clarins.csv & embedding-clarins.docx): 江佳恩
-- Front-end (index.js) / Back-end (connect.py architecture and flask): 蔡芊葳
-- Back-end (All except front-end): 黃淳庭
+## Using Embedding to Response
+- https://www.canva.com/design/DAF4Girfp7c/7ChyUgSBOYVJMHqslTeoig/view?utm_content=DAF4Girfp7c&utm_campaign=designshare&utm_medium=link&utm_source=editor
+- Approach 1: Just using openai embedding
+  - Pros: Response clear and professional
+  - Cons: Long response time, not suitable for real-time Q&A, and reply sentence is too long
+- Approach 2: Using openai embedding and chatgpt to short the sentences
+  - Pros: Can using D-ID, Don't change the architecture, and Remain professional
+  - Cons: Long response time and Need to create many google accounts for D-ID
