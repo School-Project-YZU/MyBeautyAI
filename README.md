@@ -1,5 +1,9 @@
 # MyBeautyAI
 
+## Roboflow Dataset
+
+- Blackspots and wrinkle: https://universe.roboflow.com/theme-k9kfk/melasma-fmgcn
+
 ## Environment
 
 > Tip: Create a conda environment and run below command
@@ -26,7 +30,9 @@
 
 ## Architecture Diagram
 
-![architecture](image/README/architecture.png)
+- https://drive.google.com/file/d/1wToHdSaAlpvHbGrzSANAUY-Tbwy1qnuK/view?usp=sharing
+
+![MyBeautyAI-第 4 页 drawio (1)](https://github.com/School-Project-YZU/MyBeautyAI/assets/78516704/f5738c8f-af86-4e56-937b-ce6243b78b8a)
 
 ## Using Embedding to Response
 - https://www.canva.com/design/DAF4Girfp7c/7ChyUgSBOYVJMHqslTeoig/view?utm_content=DAF4Girfp7c&utm_campaign=designshare&utm_medium=link&utm_source=editor
